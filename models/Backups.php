@@ -49,4 +49,14 @@ class Backups extends \yii\db\ActiveRecord
             'datetime' => Yii::t('app', 'Datetime'),
         ];
     }
+
+    public function getDatabase()
+    {
+        return $this->hasOne(Databases::className(), ['id' => 'database_id']);
+    }
+
+    public function getDatabaseType()
+    {
+        return $this->hasOne(DatabaseType::className(), ['id' => 'db_type_id']);
+    }
 }

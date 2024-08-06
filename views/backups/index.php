@@ -29,9 +29,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'database_id',
-            'db_type_id',
+            // 'id',
+            [
+                'attribute' => 'database_id',
+                'value' => function($model) {
+                    return $model->database ? $model->database->name : '';
+                }
+            ],
+            [
+                'attribute' => 'db_type_id',
+                'value' => function($model) {
+                    return $model->databaseType ? $model->databaseType->name : '';
+                }
+            ],
             [
                 'attribute' => 'url',
                 'value' => function($model) {
