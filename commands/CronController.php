@@ -12,6 +12,7 @@ use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\Databases;
 use app\models\Backups;
+use app\models\CronTime;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -105,7 +106,7 @@ class CronController extends Controller
 
     public function actionList() {
         // Barcha faollashtirilgan cron joblarni bazadan oling
-        $cronJobs = Backups::find()->where(['active' => 1])->all();
+        $cronJobs = CronTime::find()->where(['active' => 1])->all();
 
         $cronFileContent = '*/1 * * * * php /var/www/backup/yii cron/list';
         $cronFileContent .= "$cronJobCommand\n";
