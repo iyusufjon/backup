@@ -41,7 +41,7 @@ class CronController extends Controller
 
             if ($result['status'] == true) {
                 echo $database_name . ' dan backup olindi' . "\n";
-                
+
                 $backupModel = new Backups();
                 $backupModel->database_id = $database->id;
                 $backupModel->db_type_id = $database->db_type_id;
@@ -56,7 +56,7 @@ class CronController extends Controller
     }
 
     protected function backup($database_type, $database_name, $user, $db_password, $host='localhost') {
-        $path = Yii::getAlias('@app/data/' . $database_name);
+        $path = Yii::getAlias('@app/data/' . $database_name . '/');
 
         if (!is_dir($path)) {
             // If the directory does not exist, create it
@@ -64,6 +64,8 @@ class CronController extends Controller
         }
 
         $date = date('Y-m-d H:i:s');
+
+        // $filename_sql = 'data/bts_postgres' . $date . '.sql';
 
         $filename_sql = $path . '/' . $date . '.sql';
         $filename_tar = $path . '/' . $date . '.tar';
