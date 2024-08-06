@@ -62,4 +62,9 @@ class Databases extends \yii\db\ActiveRecord
     public static function all() {
         return ArrayHelper::map(self::find()->all(), 'id', 'name');
     }
+
+    public function getDatabaseType()
+    {
+        return $this->hasOne(DatabaseType::className(), ['id' => 'db_type_id']);
+    }
 }
