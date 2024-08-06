@@ -71,8 +71,8 @@ class CronTime extends \yii\db\ActiveRecord
         // $this->updateCrontab();
         // $this->cronRun(1, 1, '*', '*', '*');
 
-        \Yii::$app->controllerNamespace = 'app\commands';
-        $result = Yii::$app->runAction('cron/run');
+        // \Yii::$app->controllerNamespace = 'app\commands';
+        // $result = Yii::$app->runAction('cron/run');
     }
 
     public function afterDelete()
@@ -80,8 +80,8 @@ class CronTime extends \yii\db\ActiveRecord
         parent::afterDelete();
         // $this->updateCrontab();
         // $this->cronRun(1, 1, '*', '*', '*');
-        \Yii::$app->controllerNamespace = 'app\commands';
-        $result = Yii::$app->runAction('cron/run');
+        // \Yii::$app->controllerNamespace = 'app\commands';
+        // $result = Yii::$app->runAction('cron/run');
     }
 
     protected function updateCrontab()
