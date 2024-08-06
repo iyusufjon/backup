@@ -67,8 +67,8 @@ class CronController extends Controller
 
         // $filename_sql = 'data/bts_postgres' . $date . '.sql';
 
-        $filename_sql = $path . '/' . $date . '.sql';
-        $filename_tar = $path . '/' . $date . '.tar';
+        $filename_sql = $path . $date . '.sql';
+        $filename_tar = $path . $date . '.tar';
 
         echo 'filename sql: ' . $filename_sql . "\n";
         echo 'filename tar: ' . $filename_tar . "\n";
