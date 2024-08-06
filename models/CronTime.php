@@ -65,6 +65,39 @@ class CronTime extends \yii\db\ActiveRecord
         ];
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->updateCrontab();
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        $this->updateCrontab();
+    }
+
+    protected function updateCrontab()
+    {
+        // Barcha faollashtirilgan cron joblarni bazadan oling
+        $cronJobs = self::find()->where(['active' => 1])->all();
+
+        $cronFileContent = '';
+
+        // Har bir cron job uchun crontab buyruqni yarating
+        foreach ($cronJobs as $job) {
+            $cronExpression = "{$job->minutes} {$job->hours} {$job->day_of_month} {$job->month} {$job->day_of_week}";
+            $cronJobCommand = "$cronExpression php /var/www/backups/yii cron/backup-db " . $job->database_id;
+            $cronFileContent .= "$cronJobCommand\n";
+        }
+
+        // Yangi crontab faylini yozing
+        file_put_contents('/tmp/my_crontab', $cronFileContent);
+
+        // Yangi crontab faylini o'rnatish
+        exec('crontab /tmp/my_crontab');
+    }
+
     public function getDatabase()
     {
         return $this->hasOne(Databases::className(), ['id' => 'database_id']);
