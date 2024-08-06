@@ -63,7 +63,7 @@ class CronController extends Controller
             mkdir($path, 0755, true);
         }
 
-        $date = date('Y-m-d H:i:s');
+        $date = time();
 
         // $filename_sql = 'data/bts_postgres' . $date . '.sql';
 
