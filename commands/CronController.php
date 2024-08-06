@@ -8,7 +8,6 @@
 namespace app\commands;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\Databases;
@@ -107,32 +106,22 @@ class CronController extends Controller
 
     public function actionList() {
         // Barcha faollashtirilgan cron joblarni bazadan oling
-        $cronJobs = CronTime::find()->where(['is_check' => 0])->all(); // ['active' => 1]
+        $cronJobs = CronTime::find()->where(['active' => 1])->all();
 
-        if (!empty($cronJobs)) {
-            $cronJobsId = ArrayHelper::getColumn($cronJobs, 'id');
-
-            $cronFileContent = "*/1 * * * * php /var/www/backup/yii cron/list\n";
-
-            // Har bir cron job uchun crontab buyruqni yarating
-            foreach ($cronJobs as $job) {
-                $cronExpression = "{$job->minutes} {$job->hours} {$job->day_of_month} {$job->month} {$job->day_of_week}";
-                $cronJobCommand = "$cronExpression php /var/www/backup/yii cron/backup-db " . $job->database_id;;
-                $cronFileContent .= "$cronJobCommand\n";
-            }
-
-            $cronFilePath = Yii::getAlias('@runtime/my_crontab');
-            file_put_contents($cronFilePath, $cronFileContent);
-            
-            $res = exec("crontab $cronFilePath");
-
-            print_r($res);
-
-            Yii::$app->db->createCommand()->update('cron_time', [
-                'is_check' => 1,
-            ], ['IN', 'id', $cronJobsId])->execute();
-        }
         
+        $cronFileContent = "*/1 * * * * php /var/www/backup/yii cron/list\n";
+
+        // Har bir cron job uchun crontab buyruqni yarating
+        foreach ($cronJobs as $job) {
+            $cronExpression = "{$job->minutes} {$job->hours} {$job->day_of_month} {$job->month} {$job->day_of_week}";
+            $cronJobCommand = "$cronExpression php /var/www/backup/yii cron/backup-db " . $job->database_id;
+            $cronFileContent .= "$cronJobCommand\n";
+        }
+
+        $cronFilePath = Yii::getAlias('@runtime/my_crontab');
+        file_put_contents($cronFilePath, $cronFileContent);
+        exec("crontab $cronFilePath");
+
         // Yangi crontab faylini yozing
         
         // file_put_contents('/tmp/my_crontab', $cronFileContent);

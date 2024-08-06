@@ -34,7 +34,7 @@ class CronTime extends \yii\db\ActiveRecord
         return [
             [['database_id'], 'required'],
             [['database_id', 'active'], 'default', 'value' => null],
-            [['database_id', 'active', 'is_check'], 'integer'],
+            [['database_id', 'active'], 'integer'],
         
             [['minutes', 'hours', 'day_of_month', 'month', 'day_of_week'], 'required'],
             [['minutes', 'hours', 'day_of_month', 'month', 'day_of_week'], 'string'],
@@ -68,10 +68,6 @@ class CronTime extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-
-        Yii::$app->db->createCommand()->update('cron_time', [
-            'is_check' => 0,
-        ], ['id' => $this->id])->execute();
         // $this->updateCrontab();
         // $this->cronRun(1, 1, '*', '*', '*');
 
