@@ -118,11 +118,16 @@ class CronController extends Controller
             $cronFileContent .= "$cronJobCommand\n";
         }
 
+        $cronFilePath = Yii::getAlias('@runtime/my_crontab');
+        file_put_contents($cronFilePath, $cronFileContent);
+        exec("crontab $cronFilePath");
+        
         // Yangi crontab faylini yozing
-        file_put_contents('/tmp/my_crontab', $cronFileContent);
+        
+        // file_put_contents('/tmp/my_crontab', $cronFileContent);
 
         // Yangi crontab faylini o'rnatish
-        exec('crontab /tmp/my_crontab');
+        // exec('crontab /tmp/my_crontab');
     }
 
     public function actionRun($minutes=2, $hours=1, $day_of_month='*', $month='*', $day_of_week='*') {
