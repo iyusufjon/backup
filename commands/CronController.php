@@ -114,7 +114,7 @@ class CronController extends Controller
         // Har bir cron job uchun crontab buyruqni yarating
         foreach ($cronJobs as $job) {
             $cronExpression = "{$job->minutes} {$job->hours} {$job->day_of_month} {$job->month} {$job->day_of_week}";
-            $cronJobCommand = "$cronExpression php /var/www/backup/yii cron/run";
+            $cronJobCommand = "$cronExpression php /var/www/backup/yii cron/backup-db " . $job->database_id;;
             $cronFileContent .= "$cronJobCommand\n";
         }
 
