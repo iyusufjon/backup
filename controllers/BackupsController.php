@@ -117,6 +117,17 @@ class BackupsController extends AdminController
         return $this->redirect(['index']);
     }
 
+    public function actionDownload($filename)
+    {
+        $filePath = Yii::getAlias('@app/data/') . $filename;
+
+        if (file_exists($filePath)) {
+            return Yii::$app->response->sendFile($filePath);
+        } else {
+            throw new \yii\web\NotFoundHttpException("The file does not exist.");
+        }
+    }
+
     /**
      * Finds the Backups model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

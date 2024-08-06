@@ -90,7 +90,7 @@ class CronController extends Controller
 
             return [
                 'status' => true,
-                'pathUrl' => '/data/' . $database_name . '/' . $date . '.tar'
+                'pathUrl' => $database_name . '/' . $date . '.tar'
             ];
 //            $command = 'sshpass -p "bts@202011192009#" scp -r -P 2208 '.Yii::getAlias('@app').'/'.$filename_tar.' adham@83.221.163.9:/home/adham/data';
 //            echo 'command: '.$command. "\n";
