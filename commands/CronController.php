@@ -108,9 +108,9 @@ class CronController extends Controller
         // Barcha faollashtirilgan cron joblarni bazadan oling
         $cronJobs = CronTime::find()->where(['active' => 1])->all();
 
-        $cronFileContent = '*/1 * * * * php /var/www/backup/yii cron/list';
-        $cronFileContent .= "$cronFileContent\n";
-
+        
+        $cronFileContent = '';
+        
         // Har bir cron job uchun crontab buyruqni yarating
         foreach ($cronJobs as $job) {
             $cronExpression = "{$job->minutes} {$job->hours} {$job->day_of_month} {$job->month} {$job->day_of_week}";
@@ -118,10 +118,13 @@ class CronController extends Controller
             $cronFileContent .= "$cronJobCommand\n";
         }
 
+        $cronFileContent = '*/1 * * * * php /var/www/backup/yii cron/list';
+        $cronFileContent .= "$cronFileContent\n";
+
         $cronFilePath = Yii::getAlias('@runtime/my_crontab');
         file_put_contents($cronFilePath, $cronFileContent);
         exec("crontab $cronFilePath");
-        
+
         // Yangi crontab faylini yozing
         
         // file_put_contents('/tmp/my_crontab', $cronFileContent);
