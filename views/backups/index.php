@@ -36,9 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'url',
                 'value' => function($model) {
                     return Html::a('Download Backup', ['backups/download', 'filename' => $model->url]);
-                }
+                },
+                'format' => 'HTML'
             ],
-            'url:url',
+            // 'url:url',
             'datetime',
             [
                 'class' => ActionColumn::className(),
