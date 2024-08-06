@@ -39,12 +39,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            // ['label' => 'Databases', 'url' => ['/databases/index']],
-            // ['label' => 'Backups', 'url' => ['/backups/index']],
-            // ['label' => 'Database Type', 'url' => ['/database-type/index']],
-            // ['label' => 'Cron time', 'url' => ['/cron-time/index']],
-            // ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Databases', 'url' => ['/databases/index']],
+            ['label' => 'Backups', 'url' => ['/backups/index']],
+            ['label' => 'Database Type', 'url' => ['/database-type/index']],
+            ['label' => 'Cron time', 'url' => ['/cron-time/index']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'

@@ -7,11 +7,12 @@ use app\models\DatabaseTypeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\controllers\AdminController;
 
 /**
  * DatabaseTypeController implements the CRUD actions for DatabaseType model.
  */
-class DatabaseTypeController extends Controller
+class DatabaseTypeController extends AdminController
 {
     /**
      * @inheritDoc

@@ -7,11 +7,12 @@ use app\models\CronTimeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\controllers\AdminController;
 
 /**
  * CronTimeController implements the CRUD actions for CronTime model.
  */
-class CronTimeController extends Controller
+class CronTimeController extends AdminController
 {
     /**
      * @inheritDoc

@@ -7,11 +7,12 @@ use app\models\BackupsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\controllers\AdminController;
 
 /**
  * BackupsController implements the CRUD actions for Backups model.
  */
-class BackupsController extends Controller
+class BackupsController extends AdminController
 {
     /**
      * @inheritDoc
