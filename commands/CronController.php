@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 
@@ -35,7 +36,7 @@ class CronController extends Controller
         echo 'filename tar: ' . $filename_tar . "\n";
 
 //        $command = 'mysqldump -u root -p'.Yii::$app->db->password.' bts > '.$filename_sql;
-        $command = 'PGPASSWORD="' . Yii::$app->db->password . '" pg_dump -U postgres -h localhost backupdb > ' . $filename_sql;
+        $command = 'PGPASSWORD="' . \Yii::$app->db->password . '" pg_dump -U postgres -h localhost backupdb > ' . $filename_sql;
 
         echo 'command: ' . $command . "\n";
         $output = shell_exec($command);
