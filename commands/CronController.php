@@ -27,7 +27,7 @@ class CronController extends Controller
      * @param string $message the message to be echoed.
      * @return int Exit code
      */
-    public function actionBackup($message = 'hello cron backup')
+    public function actionBackupDb($message = 'hello cron backup')
     {
         $databases = Databases::find()->all();
 
