@@ -34,9 +34,7 @@ class CronController extends Controller
         $database = Databases::findOne($database_id);
 
         if ($database) {
-            $databaseType = $database->databaseType ?? '';
-
-            $result = $this->backup($databaseType, $database->name, $database->db_user, $database->db_password, $database->db_host);
+            $result = $this->backup($database->db_type_id, $database->name, $database->db_user, $database->db_password, $database->db_host);
 
             if ($result['status'] == true) {
                 echo $database->name . ' dan backup olindi' . "\n";
