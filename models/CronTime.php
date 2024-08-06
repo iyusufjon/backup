@@ -68,13 +68,15 @@ class CronTime extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        $this->updateCrontab();
+        // $this->updateCrontab();
+        $this->cronRun(1, 1, '*', '*', '*');
     }
 
     public function afterDelete()
     {
         parent::afterDelete();
-        $this->updateCrontab();
+        // $this->updateCrontab();
+        $this->cronRun(1, 1, '*', '*', '*');
     }
 
     protected function updateCrontab()
@@ -101,6 +103,15 @@ class CronTime extends \yii\db\ActiveRecord
 
         $result = exec("echo '$cronFileContent' | crontab -");
         // $result = exec('crontab /tmp/my_crontab');
+        vd($result);
+    }
+
+    protected function cronRun($minutes, $hours, $day_of_month, $month, $day_of_week) {
+        $cronExpression = "{$minutes} {$hours} {$day_of_month} {$month} {$day_of_week}";
+
+        $cronJobCommand = "{$cronExpression} php /var/www/backups/yii cron/run";
+        $result = exec("echo '$cronJobCommand' | crontab -");
+
         vd($result);
     }
 
