@@ -40,7 +40,7 @@ class CronController extends Controller
             $result = $this->backup($databaseType, $database->name, $db_user, $database->db_password, $database->db_host);
 
             if ($result['status'] == true) {
-                echo $database_name . ' dan backup olindi' . "\n";
+                echo $database->name . ' dan backup olindi' . "\n";
 
                 $backupModel = new Backups();
                 $backupModel->database_id = $database->id;
