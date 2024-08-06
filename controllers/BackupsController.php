@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Backups;
 use app\models\BackupsSearch;
 use yii\web\Controller;
