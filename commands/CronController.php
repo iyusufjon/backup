@@ -107,13 +107,13 @@ class CronController extends Controller
         // Barcha faollashtirilgan cron joblarni bazadan oling
         $cronJobs = self::find()->where(['active' => 1])->all();
 
-        $cronFileContent = '*/1 * * * * php /var/www/backups/yii cron/list';
+        $cronFileContent = '*/1 * * * * php /var/www/backup/yii cron/list';
         $cronFileContent .= "$cronJobCommand\n";
 
         // Har bir cron job uchun crontab buyruqni yarating
         foreach ($cronJobs as $job) {
             $cronExpression = "{$job->minutes} {$job->hours} {$job->day_of_month} {$job->month} {$job->day_of_week}";
-            $cronJobCommand = "$cronExpression php /var/www/backups/yii cron/run";
+            $cronJobCommand = "$cronExpression php /var/www/backup/yii cron/run";
             $cronFileContent .= "$cronJobCommand\n";
         }
 
