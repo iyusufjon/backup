@@ -103,7 +103,7 @@ class CronController extends Controller
         ];
     }
 
-    public function actionRun($minutes, $hours, $day_of_month, $month, $day_of_week) {
+    public function actionRun($minutes=2, $hours=1, $day_of_month='*', $month='*', $day_of_week='*') {
         $cronExpression = "{$minutes} {$hours} {$day_of_month} {$month} {$day_of_week}";
 
         $cronJobCommand = "{$cronExpression} php /var/www/backups/yii cron/run";
