@@ -36,9 +36,7 @@ class CronController extends Controller
         if ($database) {
             $databaseType = $database->databaseType ?? '';
 
-            $db_user = 'backup';
-
-            $result = $this->backup($databaseType, $database->name, $db_user, $database->db_password, $database->db_host);
+            $result = $this->backup($databaseType, $database->name, $database->db_user, $database->db_password, $database->db_host);
 
             if ($result['status'] == true) {
                 echo $database->name . ' dan backup olindi' . "\n";
@@ -77,9 +75,14 @@ class CronController extends Controller
         // $command = 'mysqldump -u root -p'.Yii::$app->db->password.' bts > '.$filename_sql;
         // $command = 'PGPASSWORD="' . \Yii::$app->db->password . '" pg_dump -U backup -h localhost backupdb > ' . $filename_sql;
 
-        $command = 'PGPASSWORD="' . $db_password . '" pg_dump -U "' . $user . '" -h "' . $host . '" "' . $database_name . '" > ' . $filename_sql;
-
-
+        if ($database_type == 1) { // postgresql
+            $command = 'PGPASSWORD="' . $db_password . '" pg_dump -U "' . $user . '" -h "' . $host . '" "' . $database_name . '" > ' . $filename_sql;
+        } elseif ($database_id == 2) { // mysql
+            $command = 'mysqldump -u "' . $user . '" -p"' . $db_password . '" "' . $database_name . '" > "' . $filename_sql;
+        } else {
+            $command = '';
+        }
+        
         echo 'command: ' . $command . "\n";
         $output = shell_exec($command);
 
