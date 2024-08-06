@@ -11,6 +11,7 @@ use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\Databases;
+use app\models\Backups;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -36,16 +37,36 @@ class CronController extends Controller
 
             $db_user = 'backup';
 
-            $this->backup($databaseType, $database->name, $db_user, $database->db_password, $database->db_host);
+            $result = $this->backup($databaseType, $database->name, $db_user, $database->db_password, $database->db_host);
+
+            if ($result['status'] == true) {
+                echo $database_name . ' dan backup olindi' . "\n";
+                
+                $backupModel = new Backups();
+                $backupModel->database_id = $database->id;
+                $backupModel->db_type_id = $database->db_type_id;
+                $backupModel->datetime = date('Y-m-d H:i:s');
+                $backupModel->url = $result['pathUrl'];
+
+                $backupModel->save(false);
+            }
         }
 
         return ExitCode::OK;
     }
 
     protected function backup($database_type, $database_name, $user, $db_password, $host='localhost') {
-        $date = '';
-        $filename_sql = 'data/' . $database_name . $date . '.sql';
-        $filename_tar = 'data/' . $database_name . $date . '.tar';
+        $path = Yii::getAlias('@app/data/' . $database_name);
+
+        if (!is_dir($path)) {
+            // If the directory does not exist, create it
+            mkdir($path, 0755, true);
+        }
+
+        $date = date('Y-m-d H:i:s');
+
+        $filename_sql = $path . '/' . $date . '.sql';
+        $filename_tar = $path . '/' . $date . '.tar';
 
         echo 'filename sql: ' . $filename_sql . "\n";
         echo 'filename tar: ' . $filename_tar . "\n";
@@ -64,10 +85,19 @@ class CronController extends Controller
         $output = shell_exec($command);
 
         if (is_file($filename_tar)) {
-              echo $database_name . ' dan backup olindi' . "\n";
+
+            return [
+                'status' => true,
+                'pathUrl' => $filename_tar
+            ];
 //            $command = 'sshpass -p "bts@202011192009#" scp -r -P 2208 '.Yii::getAlias('@app').'/'.$filename_tar.' adham@83.221.163.9:/home/adham/data';
 //            echo 'command: '.$command. "\n";
 //            $output = shell_exec($command);
         }
+
+        return [
+            'status' => false,
+            'pathUrl' => $filename_tar
+        ];
     }
 }
