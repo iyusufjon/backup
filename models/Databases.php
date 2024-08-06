@@ -37,7 +37,7 @@ class Databases extends \yii\db\ActiveRecord
             [['db_type_id'], 'default', 'value' => null],
             [['db_type_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['host', 'password', 'port', 'db_host', 'db_password', 'db_port'], 'string', 'max' => 255],
+            [['host', 'password', 'port', 'db_host', 'db_password', 'db_port', 'db_user'], 'string', 'max' => 255],
         ];
     }
 
@@ -56,6 +56,7 @@ class Databases extends \yii\db\ActiveRecord
             'db_host' => 'Db Host',
             'db_password' => 'Db Password',
             'db_port' => 'Db Port',
+            'db_user' => 'Db User',
         ];
     }
 

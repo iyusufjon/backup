@@ -102,4 +102,11 @@ class CronController extends Controller
             'pathUrl' => $filename_tar
         ];
     }
+
+    public function actionRun($minutes, $hours, $day_of_month, $month, $day_of_week) {
+        $cronExpression = "{$minutes} {$hours} {$day_of_month} {$month} {$day_of_week}";
+
+        $cronJobCommand = "{$cronExpression} php /var/www/backups/yii cron/run";
+        exec("echo '$cronJobCommand' | crontab -");
+    }
 }

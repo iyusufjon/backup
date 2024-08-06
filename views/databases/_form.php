@@ -42,7 +42,7 @@ $databaseTypes = DatabaseType::all();
             <?= $form->field($model, 'db_password')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-2">
-            <?= $form->field($model, 'db_port')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'db_user')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
