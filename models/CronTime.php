@@ -100,7 +100,7 @@ class CronTime extends \yii\db\ActiveRecord
         exec('crontab /tmp/my_crontab', $output, $return_var);
         
         // $result = exec('crontab /tmp/my_crontab');
-        vd($output);
+        vd($return_var);
     }
 
     public function getDatabase()
