@@ -92,15 +92,16 @@ class CronTime extends \yii\db\ActiveRecord
         }
 
         // Yangi crontab faylini yozing
-        file_put_contents('/tmp/my_crontab', $cronFileContent);
+        // file_put_contents('/tmp/my_crontab', $cronFileContent);
 
         // Yangi crontab faylini o'rnatish
-        $output = [];
-        $return_var = 0;
-        exec('crontab /tmp/my_crontab', $output, $return_var);
-        
+        // $output = [];
+        // $return_var = 0;
+        // exec('crontab /tmp/my_crontab', $output, $return_var);
+
+        $result = exec("echo '$cronFileContent' | crontab -");
         // $result = exec('crontab /tmp/my_crontab');
-        vd($return_var);
+        vd($result);
     }
 
     public function getDatabase()
