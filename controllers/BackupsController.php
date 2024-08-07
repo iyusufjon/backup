@@ -127,17 +127,19 @@ class BackupsController extends AdminController
             $sqlDeleted = false;
 
             if (file_exists($tarFilePath)) {
-                $tarDeleted = unlink($tarFilePath);
+                // $tarDeleted = unlink($tarFilePath);
+                $tarDeleted = exec('sudo rm ' . escapeshellarg($tarFilePath));
             }
 
             if (file_exists($sqlFilePath)) {
-                $sqlDeleted = unlink($sqlFilePath);
+                // $sqlDeleted = unlink($sqlFilePath);
+                $sqlDeleted = exec('sudo rm ' . escapeshellarg($sqlFilePath));
             }
 
             // Xabarni setFlash orqali o'rnatish
             if ($tarDeleted && $sqlDeleted) {
                 $model->delete();
-                
+
                 \Yii::$app->session->setFlash('success', 'Fayllar muvaffaqiyatli o\'chirildi.');
             } elseif ($tarDeleted || $sqlDeleted) {
                 \Yii::$app->session->setFlash('warning', 'Ba\'zi fayllar muvaffaqiyatli o\'chirildi, lekin hammasi emas.');
