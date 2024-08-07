@@ -46,6 +46,11 @@ class BackupsSearch extends Backups
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'datetime' => SORT_DESC, // Sana bo'yicha kamayish tartibida sort qilish
+                ]
+            ],
         ]);
 
         $this->load($params);

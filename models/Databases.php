@@ -34,10 +34,11 @@ class Databases extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['project_name', 'name', 'db_type_id'], 'required'],
             [['db_type_id'], 'default', 'value' => null],
             [['db_type_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['host', 'ssh_user', 'password', 'port', 'db_host', 'db_password', 'db_port', 'db_user'], 'string', 'max' => 255],
+            [['project_name', 'host', 'ssh_user', 'password', 'port', 'db_host', 'db_password', 'db_port', 'db_user'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,7 +50,7 @@ class Databases extends \yii\db\ActiveRecord
         // $sshHost, $sshUser, $sshPassword, $dbPassword, $dbUser, $dbName, $dbType
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Database Name',
             'db_type_id' => 'Db Type',
             'host' => 'sshHost',
             'ssh_user' => 'sshUser',
@@ -63,7 +64,7 @@ class Databases extends \yii\db\ActiveRecord
     }
 
     public static function all() {
-        return ArrayHelper::map(self::find()->all(), 'id', 'name');
+        return ArrayHelper::map(self::find()->all(), 'id', 'project_name');
     }
 
     public function getDatabaseType()

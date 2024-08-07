@@ -16,11 +16,15 @@ $databaseTypes = DatabaseType::all();
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <?= $form->field($model, 'project_name')->textInput(['maxlength' => true]) ?>
+        </div>
+
+        <div class="col-md-4">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <?= $form->field($model, 'db_type_id')->dropDownList($databaseTypes) ?>
         </div>
     </div>

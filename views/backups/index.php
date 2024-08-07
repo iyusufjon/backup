@@ -34,7 +34,7 @@ $dbTypes = DatabaseType::all();
             [
                 'attribute' => 'database_id',
                 'value' => function($model) {
-                    return $model->database ? $model->database->name : '';
+                    return $model->database ? $model->database->project_name : '';
                 },
                 'filter' => $databases
             ],
