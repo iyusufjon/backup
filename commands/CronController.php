@@ -10,6 +10,8 @@ namespace app\commands;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use phpseclib3\Net\SSH2;
+use phpseclib3\Net\SFTP;
 use app\models\Databases;
 use app\models\Backups;
 use app\models\CronTime;
@@ -24,6 +26,44 @@ use app\models\CronTime;
  */
 class CronController extends Controller
 {
+    public $sshHost = '185.196.213.110'; //'second-server-ip';
+    public $sshUser = 'root'; //'username';
+    public $sshPassword = 'borkitob@2023'; //'password';
+    public $dbUser = 'postgres';
+    public $dbPassword = 'borkitob@2023db';
+    public $dbName = 'borkitob';
+    public $exportPath = '/var/www/exported_database.sql';
+    public $localFilePath = '@app/runtime/exported_database.sql';
+
+    public function actionExportAndImport()
+    {
+        $ssh = new SSH2($this->sshHost);
+        if (!$ssh->login($this->sshUser, $this->sshPassword)) {
+            $this->stderr("Ulanish muvaffaqiyatsiz.\n");
+            return;
+        }
+
+        // PostgreSQL baza eksporti
+        $exportCommand = "PGPASSWORD='{$this->dbPassword}' pg_dump -U {$this->dbUser} -d {$this->dbName} > {$this->exportPath}";
+        $ssh->exec($exportCommand);
+
+        // Faylni yuklab olish uchun SFTP ulanishi
+        $sftp = new SFTP($this->sshHost);
+        if (!$sftp->login($this->sshUser, $this->sshPassword)) {
+            $this->stderr("SFTP ulanishi muvaffaqiyatsiz.\n");
+            return;
+        }
+
+        // Faylni yuklab olish
+        $localPath = \Yii::getAlias($this->localFilePath);
+        $sftp->get($this->exportPath, $localPath);
+
+        // Birinchi serverdagi PostgreSQL bazaga import qilish
+        $importCommand = "PGPASSWORD='{$this->dbPassword}' psql -U {$this->dbUser} -d {$this->dbName} < {$localPath}";
+        exec($importCommand);
+
+        $this->stdout("PostgreSQL baza muvaffaqiyatli yuklandi va import qilindi.\n");
+    }
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
