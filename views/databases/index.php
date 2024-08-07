@@ -29,11 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'name',
-            'db_type_id',
+            [
+                'attribute' => 'db_type_id',
+                'value' => function($model) {
+                    return $model->databaseType ? $model->databaseType->name : '';
+                }
+            ],
             'host',
-            'password',
+            'ssh_user',
+            // 'password',
             //'port',
             //'db_host',
             //'db_password',

@@ -35,35 +35,6 @@ class CronController extends Controller
     public $exportPath = '/var/www/exported_database.sql';
     public $localFilePath = '@app/runtime/exported_database.sql';
 
-    public function actionExportAndImport()
-    {
-        $ssh = new SSH2($this->sshHost);
-        if (!$ssh->login($this->sshUser, $this->sshPassword)) {
-            $this->stderr("Ulanish muvaffaqiyatsiz.\n");
-            return;
-        }
-
-        // PostgreSQL baza eksporti
-        $exportCommand = "PGPASSWORD='{$this->dbPassword}' pg_dump -U {$this->dbUser} -d {$this->dbName} > {$this->exportPath}";
-        $ssh->exec($exportCommand);
-
-        // Faylni yuklab olish uchun SFTP ulanishi
-        $sftp = new SFTP($this->sshHost);
-        if (!$sftp->login($this->sshUser, $this->sshPassword)) {
-            $this->stderr("SFTP ulanishi muvaffaqiyatsiz.\n");
-            return;
-        }
-
-        // Faylni yuklab olish
-        $localPath = \Yii::getAlias($this->localFilePath);
-        $sftp->get($this->exportPath, $localPath);
-
-        // Birinchi serverdagi PostgreSQL bazaga import qilish
-        $importCommand = "PGPASSWORD='{$this->dbPassword}' psql -U {$this->dbUser} -d {$this->dbName} < {$localPath}";
-        exec($importCommand);
-
-        $this->stdout("PostgreSQL baza muvaffaqiyatli yuklandi va import qilindi.\n");
-    }
     /**
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
@@ -74,7 +45,49 @@ class CronController extends Controller
         $database = Databases::findOne($database_id);
 
         if ($database) {
-            $result = $this->backup($database->db_type_id, $database->name, $database->db_user, $database->db_password, $database->db_host);
+            $dsn = Yii::$app->db->dsn;
+
+            $dsn1 = $dsn;
+            preg_match('/host=([^;]+)/', $dsn1, $matches);
+            $db_host = $matches[1];
+
+            $ownFlag = true;
+
+            if (!empty($database->db_host) && $db_host != $database->db_host) { // tashqi serverdan olamiz
+                $ownFlag = false;
+            }
+            
+            if ($ownFlag) {
+                $db_type_id = $database->db_type_id;
+                $db_user = $database->db_user;
+                $db_host = $database->db_host;
+
+                $db_name = $database->name;
+                $db_password = $database->db_password;
+
+                if (empty($database->db_host)) {
+                    $dsn2 = $dsn;
+
+                    $db_user = Yii::$app->db->username;
+                    
+                    preg_match('/dbname=([^;]+)/', $dsn2, $matches);
+                    
+                    $db_name = $matches[1];
+                    $db_password = Yii::$app->db->password;
+
+                    if (strpos($dsn, 'mysql:') === 0) {
+                        $db_type_id = 2;
+                    } elseif (strpos($dsn, 'pgsql:') === 0) {
+                        $db_type_id = 1;
+                    } else {
+                        $db_type_id = '';
+                    }
+                }
+
+                $result = $this->backup($db_type_id, $db_name, $db_user, $db_password, $db_host);
+            } else {
+                $result = $this->exportAndImport($database->host, $database->ssh_user, $database->password, $database->db_user, $database->name, $database->db_type_id);
+            }
 
             if ($result['status'] == true) {
                 echo $database->name . ' dan backup olindi' . "\n";
@@ -109,8 +122,7 @@ class CronController extends Controller
     protected function backup($database_type, $database_name, $user, $db_password, $host='localhost') {
         $path = Yii::getAlias('@app/data/' . $database_name . '/');
 
-        if (!is_dir($path)) {
-            // If the directory does not exist, create it
+        if (!is_dir($path)) { // If the directory does not exist, create it
             mkdir($path, 0755, true);
         }
 
@@ -157,6 +169,92 @@ class CronController extends Controller
             'status' => false,
             'pathUrl' => $filename_tar
         ];
+    }
+
+    protected function exportAndImport($sshHost, $sshUser, $sshPassword, $dbPassword, $dbUser, $dbName, $dbType)
+    {
+        $path = Yii::getAlias('@app/data/' . $database_name . '/');
+
+        if (!is_dir($path)) { // If the directory does not exist, create it
+            mkdir($path, 0755, true);
+        }
+
+        $date = time();
+
+        $filename_sql = $path . $date . '.sql';
+        $filename_tar = $path . $date . '.tar';
+
+        $exportPath = '/var/www/exported_database.sql';
+        $localFilePath = $filename_sql; //'@app/runtime/exported_database.sql';
+
+        $ssh = new SSH2($sshHost);
+        if (!$ssh->login($sshUser, $sshPassword)) {
+            $this->stderr("Ulanish muvaffaqiyatsiz.\n");
+            return;
+        }
+
+        if ($dbType == 1) { // postgressql
+            // PostgreSQL baza eksporti
+            $exportCommand = "PGPASSWORD='{$dbPassword}' pg_dump -U {$dbUser} -d {$dbName} > {$this->exportPath}";
+            $ssh->exec($exportCommand);
+
+            // Faylni yuklab olish uchun SFTP ulanishi
+            $sftp = new SFTP($sshHost);
+            if (!$sftp->login($sshUser, $sshPassword)) {
+                $this->stderr("SFTP ulanishi muvaffaqiyatsiz.\n");
+                return;
+            }
+
+            // Faylni yuklab olish
+            $localPath = \Yii::getAlias($this->localFilePath);
+            $sftp->get($this->exportPath, $localPath);
+
+            // Birinchi serverdagi PostgreSQL bazaga import qilish
+            $importCommand = "PGPASSWORD='{$dbPassword}' psql -U {$dbUser} -d {$dbName} < {$localPath}";
+            exec($importCommand);
+
+            $this->stdout("PostgreSQL baza muvaffaqiyatli yuklandi va import qilindi.\n");
+        } elseif ($dbType == 2) { // mysql
+            // Baza eksporti
+            $exportCommand = "mysqldump -u {$dbUser} -p{$dbPassword} {$dbName} > {$this->exportPath}";
+            $ssh->exec($exportCommand);
+
+            // Faylni yuklab olish uchun SFTP ulanishi
+            $sftp = new SFTP($sshHost);
+            if (!$sftp->login($sshUser, $sshPassword)) {
+                $this->stderr("SFTP ulanishi muvaffaqiyatsiz.\n");
+                return;
+            }
+
+            // Faylni yuklab olish
+            $localPath = \Yii::getAlias($this->localFilePath);
+            $sftp->get($this->exportPath, $localPath);
+
+            // Birinchi serverdagi bazaga import qilish
+            $importCommand = "mysql -u {$dbUser} -p{$dbPassword} {$dbName} < {$localPath}";
+            exec($importCommand);
+
+            $this->stdout("Baza muvaffaqiyatli yuklandi va import qilindi.\n");
+        }
+
+        $command = 'tar -czvf ' . $filename_tar . ' ' . $filename_sql;
+        echo 'command: ' . $command . "\n";
+        $output = shell_exec($command);
+
+        if (is_file($filename_tar)) {
+
+            return [
+                'status' => true,
+                'pathUrl' => $database_name . '/' . $date . '.tar'
+            ];
+        }
+
+        return [
+            'status' => false,
+            'pathUrl' => $filename_tar
+        ];
+
+        
     }
 
     public function actionList() {

@@ -30,14 +30,15 @@ $databaseTypes = DatabaseType::all();
             <?= $form->field($model, 'host')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-2">
+            <?= $form->field($model, 'ssh_user')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-2">
             <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-2">
             <?= $form->field($model, 'port')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-2">
-            <?= $form->field($model, 'db_host')->textInput(['maxlength' => true]) ?>
-        </div>
+        
         <div class="col-md-2">
             <?= $form->field($model, 'db_password')->textInput(['maxlength' => true]) ?>
         </div>

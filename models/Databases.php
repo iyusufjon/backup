@@ -37,7 +37,7 @@ class Databases extends \yii\db\ActiveRecord
             [['db_type_id'], 'default', 'value' => null],
             [['db_type_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['host', 'password', 'port', 'db_host', 'db_password', 'db_port', 'db_user'], 'string', 'max' => 255],
+            [['host', 'ssh_user', 'password', 'port', 'db_host', 'db_password', 'db_port', 'db_user'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,17 +46,19 @@ class Databases extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        // $sshHost, $sshUser, $sshPassword, $dbPassword, $dbUser, $dbName, $dbType
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'db_type_id' => 'Db Type ID',
-            'host' => 'Host',
-            'password' => 'Password',
-            'port' => 'Port',
+            'db_type_id' => 'Db Type',
+            'host' => 'sshHost',
+            'ssh_user' => 'sshUser',
+            'password' => 'sshPassword',
+            'port' => 'sshPort',
             'db_host' => 'Db Host',
-            'db_password' => 'Db Password',
             'db_port' => 'Db Port',
             'db_user' => 'Db User',
+            'db_password' => 'Db Password',
         ];
     }
 
