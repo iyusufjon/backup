@@ -8,6 +8,19 @@ use app\models\Databases;
 /** @var yii\widgets\ActiveForm $form */
 
 $databases = Databases::all();
+$minutes = minutes();
+$hours = hours();
+$dayOfMonth = dayOfMonth();
+$months = months();
+$dayOfWeek = dayOfWeek();
+
+if ($model->isNewRecord) {
+    $model->minutes = '*';
+    $model->hours = '*';
+    $model->day_of_month = '*';
+    $model->month = '*';
+    $model->day_of_week = '*';
+}
 ?>
 
 <div class="cron-time-form">
@@ -30,19 +43,19 @@ $databases = Databases::all();
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-2">
-                    <?= $form->field($model, 'minutes')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'minutes')->dropDownList($minutes) ?>
                 </div>
                 <div class="col-md-2">
-                    <?= $form->field($model, 'hours')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'hours')->dropDownList($hours) ?>
                 </div>
                 <div class="col-md-2">
-                    <?= $form->field($model, 'day_of_month')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'day_of_month')->dropDownList($dayOfMonth) ?>
                 </div>
                 <div class="col-md-2">
-                    <?= $form->field($model, 'month')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'month')->dropDownList($months) ?>
                 </div>
                 <div class="col-md-2">
-                    <?= $form->field($model, 'day_of_week')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'day_of_week')->dropDownList($dayOfWeek) ?>
                 </div>
             </div>
         </div>

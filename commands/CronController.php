@@ -39,6 +39,9 @@ class CronController extends Controller
             if ($result['status'] == true) {
                 echo $database->name . ' dan backup olindi' . "\n";
 
+                $text = $database->name . ' dan backup olindi';
+                sendMessageBot($text);
+
                 $backupModel = new Backups();
                 $backupModel->database_id = $database->id;
                 $backupModel->db_type_id = $database->db_type_id;
