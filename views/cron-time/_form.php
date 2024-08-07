@@ -20,6 +20,7 @@ if ($model->isNewRecord) {
     $model->day_of_month = '*';
     $model->month = '*';
     $model->day_of_week = '*';
+    $model->active = 1;
 }
 ?>
 
@@ -34,7 +35,10 @@ if ($model->isNewRecord) {
                     <?= $form->field($model, 'database_id')->dropDownList($databases, ['prompt' => '---']) ?>
                 </div>
                 <div class="col-md-2">
-                    <?= $form->field($model, 'active')->textInput() ?>
+                    <?= $form->field($model, 'active')->checkbox([
+                        'uncheck' => 0, // uncheck bo'lsa 0 qiymatini oladi
+                        'checked' => $model->active ? 1 : 0, // oldindan belgilangan qiymatni oladi
+                    ]) ?>
                 </div>
             </div>
     </div>
