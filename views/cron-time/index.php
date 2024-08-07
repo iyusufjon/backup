@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'database_id',
                 'value' => function($model) {
-                    return $model->database->name ?? '';
+                    return $model->database->project_name ?? '';
                 }
             ],
             'minutes',
