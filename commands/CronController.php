@@ -101,6 +101,16 @@ class CronController extends Controller
                 $backupModel->datetime = date('Y-m-d H:i:s');
                 $backupModel->url = $result['pathUrl'];
 
+                if (file_exists($result['localFilePath'])) {
+                    $fileSizeBytes = filesize($result['localFilePath']);
+
+                    // Fayl hajmini MB ga aylantirish
+                    $fileSizeMB = $fileSizeBytes / (1024 * 1024);
+
+                    $backupModel->file_size = $fileSizeMB;
+
+                    // echo "Fayl hajmi: " . round($fileSizeMB, 2) . " MB";
+                }
                 $backupModel->save(false);
 
                 $client = new \yii\httpclient\Client();
@@ -159,7 +169,8 @@ class CronController extends Controller
 
             return [
                 'status' => true,
-                'pathUrl' => $database_name . '/' . $date . '.tar'
+                'pathUrl' => $database_name . '/' . $date . '.tar',
+                'localFilePath' => $filename_tar
             ];
 //            $command = 'sshpass -p "bts@202011192009#" scp -r -P 2208 '.Yii::getAlias('@app').'/'.$filename_tar.' adham@83.221.163.9:/home/adham/data';
 //            echo 'command: '.$command. "\n";
@@ -168,7 +179,8 @@ class CronController extends Controller
 
         return [
             'status' => false,
-            'pathUrl' => $filename_tar
+            'pathUrl' => $filename_tar,
+            'localFilePath' => $filename_tar
         ];
     }
 
@@ -246,13 +258,15 @@ class CronController extends Controller
 
             return [
                 'status' => true,
-                'pathUrl' => $dbName . '/' . $date . '.tar'
+                'pathUrl' => $dbName . '/' . $date . '.tar',
+                'localFilePath' => $filename_tar
             ];
         }
 
         return [
             'status' => false,
-            'pathUrl' => $filename_tar
+            'pathUrl' => $filename_tar,
+            'localFilePath' => $filename_tar
         ];
 
         

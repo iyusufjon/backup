@@ -13,6 +13,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
+    'timeZone' => 'Asia/Tashkent',
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',

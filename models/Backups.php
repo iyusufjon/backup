@@ -33,6 +33,7 @@ class Backups extends \yii\db\ActiveRecord
             [['database_id', 'db_type_id'], 'integer'],
             [['datetime'], 'safe'],
             [['url'], 'string', 'max' => 255],
+            [['file_size'], 'number']
         ];
     }
 
@@ -47,6 +48,7 @@ class Backups extends \yii\db\ActiveRecord
             'db_type_id' => Yii::t('app', 'Db Type ID'),
             'url' => Yii::t('app', 'Url'),
             'datetime' => Yii::t('app', 'Datetime'),
+            'file_size' => Yii::t('app', 'File Size'),
         ];
     }
 
