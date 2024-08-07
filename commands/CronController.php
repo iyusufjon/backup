@@ -110,7 +110,7 @@ class CronController extends Controller
                     // echo "Fayl hajmi: " . round($fileSizeMB, 2) . " MB";
                 }
 
-                $text = $database->name . ' dan backup olindi. Hajmi: ' . $backupModel->fileSizeMB . ' MB (tar)';
+                $text = $database->name . ' dan backup olindi. Hajmi: ' . $backupModel->file_size . ' MB (tar)';
 
                 $backupModel->save(false);
 
