@@ -113,7 +113,38 @@ class BackupsController extends AdminController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($model) {
+            $fileUrl = $model->url;
+
+            // Fayllar yo'lini aniqlash
+            $tarFilePath = \Yii::getAlias('@app/data/' . $fileUrl);
+            $sqlFilePath = str_replace('.tar', '.sql', $tarFilePath);
+
+            // Fayllarni o'chirish
+            $tarDeleted = false;
+            $sqlDeleted = false;
+
+            if (file_exists($tarFilePath)) {
+                $tarDeleted = unlink($tarFilePath);
+            }
+
+            if (file_exists($sqlFilePath)) {
+                $sqlDeleted = unlink($sqlFilePath);
+            }
+
+            // Xabarni setFlash orqali o'rnatish
+            if ($tarDeleted && $sqlDeleted) {
+                $model->delete();
+                
+                \Yii::$app->session->setFlash('success', 'Fayllar muvaffaqiyatli o\'chirildi.');
+            } elseif ($tarDeleted || $sqlDeleted) {
+                \Yii::$app->session->setFlash('warning', 'Ba\'zi fayllar muvaffaqiyatli o\'chirildi, lekin hammasi emas.');
+            } else {
+                \Yii::$app->session->setFlash('error', 'Fayllarni o\'chirishda xatolik yuz berdi yoki fayllar topilmadi.');
+            }
+        }
 
         return $this->redirect(['index']);
     }
