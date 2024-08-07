@@ -52,6 +52,7 @@ $dbTypes = DatabaseType::all();
                 },
                 'format' => 'HTML'
             ],
+            'file_size',
             // 'url:url',
             'datetime',
             [

@@ -93,8 +93,6 @@ class CronController extends Controller
             if ($result['status'] == true) {
                 echo $database->name . ' dan backup olindi' . "\n";
 
-                $text = $database->name . ' dan backup olindi';
-                
                 $backupModel = new Backups();
                 $backupModel->database_id = $database->id;
                 $backupModel->db_type_id = $database->db_type_id;
@@ -111,6 +109,9 @@ class CronController extends Controller
 
                     // echo "Fayl hajmi: " . round($fileSizeMB, 2) . " MB";
                 }
+
+                $text = $database->name . ' dan backup olindi. Hajmi: ' . $backupModel->fileSizeMB . ' MB (tar)';
+
                 $backupModel->save(false);
 
                 $client = new \yii\httpclient\Client();
