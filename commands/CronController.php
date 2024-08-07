@@ -53,7 +53,7 @@ class CronController extends Controller
 
             $ownFlag = true;
 
-            if (!empty($database->host) && $host != $database->$host) { // tashqi serverdan olamiz
+            if (!empty($database->host) && $host != $database->host) { // tashqi serverdan olamiz
                 $ownFlag = false;
             }
             
