@@ -173,7 +173,7 @@ class CronController extends Controller
 
     protected function exportAndImport($sshHost, $sshUser, $sshPassword, $dbPassword, $dbUser, $dbName, $dbType)
     {
-        $path = Yii::getAlias('@app/data/' . $database_name . '/');
+        $path = Yii::getAlias('@app/data/' . $dbName . '/');
 
         if (!is_dir($path)) { // If the directory does not exist, create it
             mkdir($path, 0755, true);
