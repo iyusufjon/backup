@@ -86,7 +86,7 @@ class CronController extends Controller
 
                 $result = $this->backup($db_type_id, $db_name, $db_user, $db_password, $db_host);
             } else {
-                $result = $this->exportAndImport($database->host, $database->ssh_user, $database->password, $database->db_user, $database->name, $database->db_type_id);
+                $result = $this->exportAndImport($database->host, $database->ssh_user, $database->password, $database->password, $database->db_user, $database->name, $database->db_type_id);
             }
 
             if ($result['status'] == true) {
