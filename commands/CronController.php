@@ -53,7 +53,7 @@ class CronController extends Controller
 
             $ownFlag = true;
 
-            if (!empty($database->db_host) && $db_host != $database->db_host) { // tashqi serverdan olamiz
+            if (!empty($database->db_host) || $db_host != $database->db_host) { // tashqi serverdan olamiz
                 $ownFlag = false;
             }
             
@@ -66,6 +66,7 @@ class CronController extends Controller
                 $db_password = $database->db_password;
 
                 if (empty($database->db_host)) {
+
                     $dsn2 = $dsn;
 
                     $db_user = Yii::$app->db->username;
