@@ -49,11 +49,11 @@ class CronController extends Controller
 
             $dsn1 = $dsn;
             preg_match('/host=([^;]+)/', $dsn1, $matches);
-            $db_host = $matches[1];
+            $host = $matches[1];
 
             $ownFlag = true;
 
-            if (!empty($database->db_host) || $db_host != $database->db_host) { // tashqi serverdan olamiz
+            if (!empty($database->host) && $host != $database->$host) { // tashqi serverdan olamiz
                 $ownFlag = false;
             }
             
