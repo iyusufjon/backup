@@ -40,8 +40,7 @@ class CronController extends Controller
                 echo $database->name . ' dan backup olindi' . "\n";
 
                 $text = $database->name . ' dan backup olindi';
-                sendMessageBot($text);
-
+                
                 $backupModel = new Backups();
                 $backupModel->database_id = $database->id;
                 $backupModel->db_type_id = $database->db_type_id;
@@ -49,6 +48,18 @@ class CronController extends Controller
                 $backupModel->url = $result['pathUrl'];
 
                 $backupModel->save(false);
+
+                $client = new \yii\httpclient\Client();
+
+                $response = $client->createRequest()
+                    ->setMethod('POST')
+                    ->setUrl('https://api.telegram.org/bot6174619802:AAH6o8ruq6muoeIJbVBrBz9SBEYXbFBz5Ag/sendMessage')
+                    ->setData(['text' => json_encode($text), 'chat_id' => -1002174643856])
+                    ->setOptions([
+                        //'proxy' => 'tcp://proxy.example.com:5100', // use a Proxy
+                        'timeout' => 2, // set timeout to 5 seconds for the case server is not responding
+                    ])
+                    ->send();
             }
         }
 
