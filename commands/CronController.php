@@ -245,7 +245,7 @@ class CronController extends Controller
 
             return [
                 'status' => true,
-                'pathUrl' => $database_name . '/' . $date . '.tar'
+                'pathUrl' => $dbName . '/' . $date . '.tar'
             ];
         }
 
