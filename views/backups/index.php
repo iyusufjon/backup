@@ -33,6 +33,7 @@ $dbTypes = DatabaseType::all();
             // 'id',
             [
                 'attribute' => 'database_id',
+                'label' => 'Project name',
                 'value' => function($model) {
                     return $model->database ? $model->database->project_name : '';
                 },
