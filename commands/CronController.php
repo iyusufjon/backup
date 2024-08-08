@@ -113,7 +113,7 @@ class CronController extends Controller
                 $backupModel->save(false);
 
                 $text = $database->project_name . ' dan backup olindi. Hajmi: ' . $backupModel->file_size . ' MB (tar)';
-                
+
                 $client = new \yii\httpclient\Client();
 
                 $response = $client->createRequest()
@@ -297,6 +297,10 @@ class CronController extends Controller
 
         // Yangi crontab faylini o'rnatish
         // exec('crontab /tmp/my_crontab');
+    }
+
+    public function actionTest() {
+        echo date('Y-m-d H:i:s');
     }
 
     public function actionRun($minutes=2, $hours=1, $day_of_month='*', $month='*', $day_of_week='*') {
