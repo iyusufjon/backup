@@ -127,21 +127,23 @@ class BackupsController extends AdminController
             $sqlDeleted = false;
 
             if (file_exists($tarFilePath)) {
-                // $tarDeleted = unlink($tarFilePath);
-                $tarDeleted = exec('sudo rm ' . escapeshellarg($tarFilePath));
+                $tarDeleted = unlink($tarFilePath);
+                // $tarDeleted = exec('sudo rm ' . escapeshellarg($tarFilePath));
+                // $tarDeleted = exec('sudo rm ' . escapeshellarg($tarFilePath) . ' 2>&1', $output, $return_var);
             }
 
             if (file_exists($sqlFilePath)) {
-                // $sqlDeleted = unlink($sqlFilePath);
-                $sqlDeleted = exec('sudo rm ' . escapeshellarg($sqlFilePath));
+                $sqlDeleted = unlink($sqlFilePath);
+                // $sqlDeleted = exec('sudo rm ' . escapeshellarg($sqlFilePath));
             }
-
+            
             // Xabarni setFlash orqali o'rnatish
             if ($tarDeleted && $sqlDeleted) {
                 $model->delete();
 
                 \Yii::$app->session->setFlash('success', 'Fayllar muvaffaqiyatli o\'chirildi.');
             } elseif ($tarDeleted || $sqlDeleted) {
+                $model->delete();
                 \Yii::$app->session->setFlash('warning', 'Ba\'zi fayllar muvaffaqiyatli o\'chirildi, lekin hammasi emas.');
             } else {
                 \Yii::$app->session->setFlash('error', 'Fayllarni o\'chirishda xatolik yuz berdi yoki fayllar topilmadi.');
