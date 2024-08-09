@@ -12,7 +12,7 @@ class m240807_100902_add_file_size_column_to_backups_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%backups}}', 'file_size', $this->decimal(10,2));
+        $this->addColumn('{{%backups}}', 'file_size', $this->decimal(20,4));
     }
 
     /**
