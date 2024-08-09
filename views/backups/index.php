@@ -33,7 +33,7 @@ $dbTypes = DatabaseType::all();
             <?= Yii::$app->session->getFlash('error') ?>
         </div>
     <?php endif; ?>
-    
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -65,7 +65,13 @@ $dbTypes = DatabaseType::all();
                 },
                 'format' => 'HTML'
             ],
-            'file_size',
+            [
+                'attribute' => 'file_size',
+                'value' => function($model) {
+                    return $model->file_size . ' MB';
+                },
+                'format' => 'HTML'
+            ],
             // 'url:url',
             'datetime',
             [
