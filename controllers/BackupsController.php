@@ -127,12 +127,15 @@ class BackupsController extends AdminController
             $sqlDeleted = false;
 
             if (file_exists($tarFilePath)) {
+                // Fayl joylashgan papkaga yozish huquqini berish (777)
+                chmod(dirname($tarFilePath), 0777);
                 $tarDeleted = unlink($tarFilePath);
                 // $tarDeleted = exec('sudo rm ' . escapeshellarg($tarFilePath));
                 // $tarDeleted = exec('sudo rm ' . escapeshellarg($tarFilePath) . ' 2>&1', $output, $return_var);
             }
 
             if (file_exists($sqlFilePath)) {
+                chmod(dirname($sqlFilePath), 0777);
                 $sqlDeleted = unlink($sqlFilePath);
                 // $sqlDeleted = exec('sudo rm ' . escapeshellarg($sqlFilePath));
             }

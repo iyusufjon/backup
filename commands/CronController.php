@@ -58,6 +58,7 @@ class CronController extends Controller
             }
             
             if ($ownFlag) {
+                
                 $db_type_id = $database->db_type_id;
                 $db_user = $database->db_user;
                 $db_host = $database->db_host;
@@ -65,7 +66,7 @@ class CronController extends Controller
                 $db_name = $database->name;
                 $db_password = $database->db_password;
 
-                if (empty($database->db_host)) {
+                if (empty($database->host)) {
 
                     $dsn2 = $dsn;
 
@@ -87,7 +88,7 @@ class CronController extends Controller
 
                 $result = $this->backup($db_type_id, $db_name, $db_user, $db_password, $db_host);
             } else {
-                $result = $this->exportAndImport($database->host, $database->ssh_user, $database->password, $database->password, $database->db_user, $database->name, $database->db_type_id);
+                $result = $this->exportAndImport($database->host, $database->ssh_user, $database->password, $database->db_password, $database->db_user, $database->name, $database->db_type_id);
             }
 
             if ($result['status'] == true) {
@@ -210,7 +211,7 @@ class CronController extends Controller
         if ($dbType == 1) { // postgressql
             // PostgreSQL baza eksporti
             $exportCommand = "PGPASSWORD='{$dbPassword}' pg_dump -U {$dbUser} -d {$dbName} > {$this->exportPath}";
-            $ssh->exec($exportCommand);
+            $output = $ssh->exec($exportCommand);
 
             // Faylni yuklab olish uchun SFTP ulanishi
             $sftp = new SFTP($sshHost);
@@ -220,8 +221,8 @@ class CronController extends Controller
             }
 
             // Faylni yuklab olish
-            $localPath = \Yii::getAlias($this->localFilePath);
-            $sftp->get($this->exportPath, $localPath);
+            $localPath = \Yii::getAlias($localFilePath);
+            $sftp->get($exportPath, $localPath);
 
             // Birinchi serverdagi PostgreSQL bazaga import qilish
             $importCommand = "PGPASSWORD='{$dbPassword}' psql -U {$dbUser} -d {$dbName} < {$localPath}";
@@ -241,8 +242,8 @@ class CronController extends Controller
             }
 
             // Faylni yuklab olish
-            $localPath = \Yii::getAlias($this->localFilePath);
-            $sftp->get($this->exportPath, $localPath);
+            $localPath = \Yii::getAlias($localFilePath);
+            $sftp->get($exportPath, $localPath);
 
             // Birinchi serverdagi bazaga import qilish
             $importCommand = "mysql -u {$dbUser} -p{$dbPassword} {$dbName} < {$localPath}";
