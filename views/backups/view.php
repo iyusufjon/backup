@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -30,8 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'database_id',
-            'db_type_id',
+            [
+                'attribute' => 'database_id',
+                'label' => Yii::t('app', 'Project name'),
+                'value' => function($model) {
+                    return $model->database ? $model->database->project_name : '';
+                },
+                'filter' => $databases
+            ],
+            [
+                'attribute' => 'db_type_id',
+                'value' => function($model) {
+                    return $model->databaseType ? $model->databaseType->name : '';
+                },
+                'filter' => $dbTypes
+            ],
             'url:url',
             'datetime',
         ],
