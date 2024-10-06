@@ -42,7 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->databaseType ? $model->databaseType->name : '';
                 }
             ],
-            'url:url',
+            [
+                'attribute' => 'url',
+                'value' => function($model) {
+                    return Html::a(Yii::t('app', 'Download Backup'), ['backups/download', 'filename' => $model->url]);
+                },
+                'format' => 'HTML'
+            ],
             'datetime',
         ],
     ]) ?>
