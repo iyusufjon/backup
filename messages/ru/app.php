@@ -22,7 +22,7 @@ return [
 	'Project Name' => 'Название проекта',
 	'Url' => 'URL-адрес',
 	'File Size' => 'Размер файла',
-	'Datetime' => 'Datetime',
+	'Datetime' => 'Дата и время',
 	'Save' => 'Сохранять',
 	'Cron Times' => 'Времена (Cron)',
 	'Create Cron Time' => 'Создать время (Cron)',
@@ -37,7 +37,8 @@ return [
 	'Remember Me' => 'Запомнить меня',
 	'Update Database Type: {name}' => 'Тип базы данных обновления: {name}',
 	'Update Cron Time: {name}' => 'Обновление Cron Time: {name}',
-	
+	'Download Backup'	 => 'Загрузить резервную копию',
+	'Powered by' => 'Питаться от',
 ];
 
 ?>
