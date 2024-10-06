@@ -45,7 +45,7 @@ class Backups extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'database_id' => Yii::t('app', 'Database ID'),
-            'db_type_id' => Yii::t('app', 'Db Type ID'),
+            'db_type_id' => Yii::t('app', 'Db Type'),
             'url' => Yii::t('app', 'Url'),
             'datetime' => Yii::t('app', 'Datetime'),
             'file_size' => Yii::t('app', 'File Size'),

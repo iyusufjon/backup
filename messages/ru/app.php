@@ -1,0 +1,43 @@
+<?php
+
+return [
+	'My application' => 'Мое заявление',
+	'Home' => 'Главная страница',
+	'Backups' => 'Резервные копии',
+	'Database' => 'База данных',
+	'Databases' => 'Базы данных',
+	'Database Types' => 'Типы баз данных',
+	'Database Type' => 'Тип базы данных',
+	'Create Database Type' => 'Создать тип базы данных',
+	'Name' => 'Имя',
+	'Active' => 'Активный',
+	'Create Databases' => 'Создание баз данных',
+	'Database Name' => 'Имя базы данных',
+	'Db Type' => 'Тип БД',
+	'Cron time' => 'Время (Cron)',
+	'Login' => 'Входь',
+	'Logout' => 'Выйти',
+	'Update' => 'Обновлять',
+	'Delete' => 'Удалить',
+	'Project name' => 'Название проекта',
+	'Url' => 'URL-адрес',
+	'File Size' => 'Размер файла',
+	'Datetime' => 'Datetime',
+	'Save' => 'Сохранять',
+	'Cron Times' => 'Времена (Cron)',
+	'Create Cron Time' => 'Создать время (Cron)',
+	'Minutes' => 'Минуты',
+	'Hours' => 'Часы',
+	'Day Of Month' => 'День месяца',
+	'Month' => 'Месяц',
+	'Day Of Week' => 'День недели',
+	'Backup project' => 'Резервный проект!',
+	'Username' => 'Имя пользователя',
+	'Password' => 'Пароль',
+	'Remember Me' => 'Запомнить меня',
+	'Update Database Type: {name}' => 'Тип базы данных обновления: {name}',
+	'Update Cron Time: {name}' => 'Обновление Cron Time: {name}',
+	
+];
+
+?>

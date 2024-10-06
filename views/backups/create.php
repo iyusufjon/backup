@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /** @var app\models\Backups $model */
 
 $this->title = Yii::t('app', 'Create Backups');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Backups'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Резервные копии'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="backups-create">

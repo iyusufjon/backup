@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->databaseType ? $model->databaseType->name : '';
                 }
             ],
-            'host',
-            'ssh_user',
+            // 'host',
+            // 'ssh_user',
             // 'password',
             //'port',
             //'db_host',

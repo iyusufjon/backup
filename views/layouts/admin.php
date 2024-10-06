@@ -39,16 +39,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Databases', 'url' => ['/databases/index']],
-            ['label' => 'Backups', 'url' => ['/backups/index']],
-            ['label' => 'Database Type', 'url' => ['/database-type/index']],
-            ['label' => 'Cron time', 'url' => ['/cron-time/index']],
+            ['label' => Yii::t('app', 'Databases'), 'url' => ['/databases/index']],
+            ['label' => Yii::t('app', 'Backups'), 'url' => ['/backups/index']],
+            ['label' => Yii::t('app', 'Database Type'), 'url' => ['/database-type/index']],
+            ['label' => Yii::t('app', 'Cron time'), 'url' => ['/cron-time/index']],
             Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
+                ? ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
+                        Yii::t('app', 'Logout'). ' (' . Yii::$app->user->identity->username . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()

@@ -49,17 +49,17 @@ class Databases extends \yii\db\ActiveRecord
     {
         // $sshHost, $sshUser, $sshPassword, $dbPassword, $dbUser, $dbName, $dbType
         return [
-            'id' => 'ID',
-            'name' => 'Database Name',
-            'db_type_id' => 'Db Type',
-            'host' => 'sshHost',
-            'ssh_user' => 'sshUser',
-            'password' => 'sshPassword',
-            'port' => 'sshPort',
-            'db_host' => 'Db Host',
-            'db_port' => 'Db Port',
-            'db_user' => 'Db User',
-            'db_password' => 'Db Password',
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Database Name'),
+            'db_type_id' => Yii::t('app', 'Db Type'),
+            'host' => Yii::t('app', 'sshHost'),
+            'ssh_user' => Yii::t('app', 'sshUser'),
+            'password' => Yii::t('app', 'sshPassword'),
+            'port' => Yii::t('app', 'sshPort'),
+            'db_host' => Yii::t('app', 'Db Host'),
+            'db_port' => Yii::t('app', 'Db Port'),
+            'db_user' => Yii::t('app', 'Db User'),
+            'db_password' => Yii::t('app', 'Db Password'),
         ];
     }
 

@@ -55,7 +55,7 @@ class CronTime extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'database_id' => Yii::t('app', 'Database ID'),
+            'database_id' => Yii::t('app', 'Database'),
             'minutes' => Yii::t('app', 'Minutes'),
             'hours' => Yii::t('app', 'Hours'),
             'day_of_month' => Yii::t('app', 'Day Of Month'),

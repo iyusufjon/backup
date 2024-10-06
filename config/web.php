@@ -12,10 +12,23 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'timeZone' => 'Asia/Tashkent',
+    'language' => 'ru', // default til - rus tili
+    'sourceLanguage' => 'en-US', // original til
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'X3uFpQR2fym91we5msATWJ5tc8qPrdRW',
+        ],
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

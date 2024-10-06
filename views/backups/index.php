@@ -12,7 +12,7 @@ use yii\grid\GridView;
 /** @var app\models\BackupsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Backups');
+$this->title = Yii::t('app', 'Резервные копии');
 $this->params['breadcrumbs'][] = $this->title;
 
 $databases = Databases::all();
@@ -45,7 +45,7 @@ $dbTypes = DatabaseType::all();
             // 'id',
             [
                 'attribute' => 'database_id',
-                'label' => 'Project name',
+                'label' => Yii::t('app', 'Project name'),
                 'value' => function($model) {
                     return $model->database ? $model->database->project_name : '';
                 },
