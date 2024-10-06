@@ -34,15 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => Yii::t('app', 'Project name'),
                 'value' => function($model) {
                     return $model->database ? $model->database->project_name : '';
-                },
-                'filter' => $databases
+                }
             ],
             [
                 'attribute' => 'db_type_id',
                 'value' => function($model) {
                     return $model->databaseType ? $model->databaseType->name : '';
-                },
-                'filter' => $dbTypes
+                }
             ],
             'url:url',
             'datetime',
