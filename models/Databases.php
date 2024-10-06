@@ -50,6 +50,7 @@ class Databases extends \yii\db\ActiveRecord
         // $sshHost, $sshUser, $sshPassword, $dbPassword, $dbUser, $dbName, $dbType
         return [
             'id' => Yii::t('app', 'ID'),
+            'project_name' => Yii::t('app', 'Project Name'),
             'name' => Yii::t('app', 'Database Name'),
             'db_type_id' => Yii::t('app', 'Db Type'),
             'host' => Yii::t('app', 'sshHost'),
