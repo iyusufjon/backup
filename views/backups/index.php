@@ -61,7 +61,7 @@ $dbTypes = DatabaseType::all();
             [
                 'attribute' => 'url',
                 'value' => function($model) {
-                    return Html::a('Download Backup', ['backups/download', 'filename' => $model->url]);
+                    return Html::a(Yii::t('app', 'Download Backup'), ['backups/download', 'filename' => $model->url]);
                 },
                 'format' => 'HTML'
             ],
