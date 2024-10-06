@@ -38,7 +38,7 @@ return [
 	'Update Database Type: {name}' => 'Тип базы данных обновления: {name}',
 	'Update Cron Time: {name}' => 'Обновление Cron Time: {name}',
 	'Download Backup'	 => 'Загрузить резервную копию',
-	'Powered_by' => 'Питаться от',
+	'Powered by' => 'Питаться от',
 ];
 
 ?>

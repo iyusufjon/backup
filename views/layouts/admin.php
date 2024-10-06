@@ -73,7 +73,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <div class="container">
         <div class="row text-muted">
             <div class="col-md-6 text-center text-md-start">&copy; <a href="http://tulkin.uz">tulkin.uz</a> <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end"><?= Yii::t('Powered_by') ?><a href="https://t.me/iyusufjon">Yusufjon Ismatov</a></div>
+            <div class="col-md-6 text-center text-md-end"><?= Yii::t('app', 'Powered by') ?><a href="https://t.me/iyusufjon">Yusufjon Ismatov</a></div>
         </div>
     </div>
 </footer>
