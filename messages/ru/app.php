@@ -19,7 +19,7 @@ return [
 	'Logout' => 'Выйти',
 	'Update' => 'Обновлять',
 	'Delete' => 'Удалить',
-	'Project name' => 'Название проекта',
+	'Project Name' => 'Название проекта',
 	'Url' => 'URL-адрес',
 	'File Size' => 'Размер файла',
 	'Datetime' => 'Datetime',
