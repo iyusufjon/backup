@@ -45,7 +45,7 @@ $dbTypes = DatabaseType::all();
             // 'id',
             [
                 'attribute' => 'database_id',
-                'label' => Yii::t('app', 'Project name'),
+                'label' => Yii::t('app', 'Project Name'),
                 'value' => function($model) {
                     return $model->database ? $model->database->project_name : '';
                 },
