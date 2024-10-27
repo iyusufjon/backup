@@ -315,6 +315,10 @@ class CronController extends Controller
 
     public function actionCleanup()
     {
+        // Hozirgi oyni boshlanish sanasi
+        $currentMonthStart = date('Y-m-01 00:00:00');
+
+        // Har bir database_id uchun oxirgi zaxira nusxasini tanlash
         $subquery = (new Query())
             ->select(['id'])
             ->from('backups')
