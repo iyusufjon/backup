@@ -8,6 +8,7 @@
 namespace app\commands;
 
 use Yii;
+use yii\db\Query;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use phpseclib3\Net\SSH2;
@@ -314,50 +315,44 @@ class CronController extends Controller
 
     public function actionCleanup()
     {
-        // Hozirgi oyni boshlanish sanasi
-        $currentMonthStart = date('Y-m-01 00:00:00');
-        
-        // Har bir database_id uchun oxirgi zaxira nusxasini tanlash
-        $latestBackups = Backups::find()
-            ->select(['id', 'database_id', 'MAX(datetime) AS max_datetime'])
+        $subquery = (new Query())
+            ->select(['id'])
+            ->from('backups')
             ->where(['<', 'datetime', $currentMonthStart])
-            ->groupBy('database_id')
-            ->asArray()
-            ->all();
+            ->andWhere([
+                'id' => (new Query())
+                    ->select(['MAX(id)'])
+                    ->from('backups')
+                    ->where('datetime < :currentMonthStart', [':currentMonthStart' => $currentMonthStart])
+                    ->groupBy('database_id')
+            ]);
 
-        $latestBackupIds = array_column($latestBackups, 'id');
+        // Oxirgi zaxira nusxalari IDlarini olish
+        $latestBackupIds = $subquery->column();
 
-        // Eski zaxira nusxalarini topish (faqat oxirgilaridan tashqari)
-        $oldBackups = Backups::find()
+        // Eski zaxira nusxalarini topish va o'chirish
+        $oldBackups = Backup::find()
             ->where(['<', 'datetime', $currentMonthStart])
             ->andWhere(['NOT IN', 'id', $latestBackupIds])
             ->all();
 
-        // Eski zaxira nusxalarini o'chirish
         foreach ($oldBackups as $backup) {
-            // Faylni o'chirish uchun to'liq yo'lni aniqlash
             $filePath = Yii::getAlias('@app/data/' . $backup->url);
 
-            // Fayl mavjudligini tekshirish va o'chirish
             if (file_exists($filePath)) {
                 if (unlink($filePath)) {
                     echo "Fayl o'chirildi: " . $filePath . "\n";
                 } else {
                     echo "Faylni o'chirishda xatolik yuz berdi: " . $filePath . "\n";
                 }
-            } else {
-                echo "Fayl topilmadi: " . $filePath . "\n";
             }
 
-            // Zaxira yozuvini bazadan o'chirish
             if ($backup->delete()) {
                 echo "Bazadan o'chirildi: " . $backup->id . "\n";
             } else {
                 echo "Bazadan o'chirishda xatolik: " . $backup->id . "\n";
             }
         }
-
-        echo "Eski zaxira nusxalari muvaffaqiyatli tozalandi.\n";
     }
 
 }
