@@ -335,7 +335,7 @@ class CronController extends Controller
         $latestBackupIds = $subquery->column();
 
         // Eski zaxira nusxalarini topish va o'chirish
-        $oldBackups = Backup::find()
+        $oldBackups = Backups::find()
             ->where(['<', 'datetime', $currentMonthStart])
             ->andWhere(['NOT IN', 'id', $latestBackupIds])
             ->all();
