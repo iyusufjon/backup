@@ -310,4 +310,54 @@ class CronController extends Controller
         $cronJobCommand = "{$cronExpression} php /var/www/backups/yii cron/run";
         exec("echo '$cronJobCommand' | crontab -");
     }
+
+
+    public function actionCleanup()
+    {
+        // Hozirgi oyni boshlanish sanasi
+        $currentMonthStart = date('Y-m-01 00:00:00');
+        
+        // Har bir database_id uchun oxirgi zaxira nusxasini tanlash
+        $latestBackups = Backups::find()
+            ->select(['id', 'database_id', 'MAX(datetime) AS max_datetime'])
+            ->where(['<', 'datetime', $currentMonthStart])
+            ->groupBy('database_id')
+            ->asArray()
+            ->all();
+
+        $latestBackupIds = array_column($latestBackups, 'id');
+
+        // Eski zaxira nusxalarini topish (faqat oxirgilaridan tashqari)
+        $oldBackups = Backups::find()
+            ->where(['<', 'datetime', $currentMonthStart])
+            ->andWhere(['NOT IN', 'id', $latestBackupIds])
+            ->all();
+
+        // Eski zaxira nusxalarini o'chirish
+        foreach ($oldBackups as $backup) {
+            // Faylni o'chirish uchun to'liq yo'lni aniqlash
+            $filePath = Yii::getAlias('@app/data/' . $backup->url);
+
+            // Fayl mavjudligini tekshirish va o'chirish
+            if (file_exists($filePath)) {
+                if (unlink($filePath)) {
+                    echo "Fayl o'chirildi: " . $filePath . "\n";
+                } else {
+                    echo "Faylni o'chirishda xatolik yuz berdi: " . $filePath . "\n";
+                }
+            } else {
+                echo "Fayl topilmadi: " . $filePath . "\n";
+            }
+
+            // Zaxira yozuvini bazadan o'chirish
+            if ($backup->delete()) {
+                echo "Bazadan o'chirildi: " . $backup->id . "\n";
+            } else {
+                echo "Bazadan o'chirishda xatolik: " . $backup->id . "\n";
+            }
+        }
+
+        echo "Eski zaxira nusxalari muvaffaqiyatli tozalandi.\n";
+    }
+
 }
