@@ -341,20 +341,37 @@ class CronController extends Controller
             ->all();
 
         foreach ($oldBackups as $backup) {
-            $filePath = Yii::getAlias('@app/data/' . $backup->url);
+            // Fayl yo'llarini aniqlash
+            $tarFilePath = Yii::getAlias('@app/data/' . $backup->url);
+            $sqlFilePath = str_replace('.tar', '.sql', $tarFilePath);
 
-            if (file_exists($filePath)) {
-                if (unlink($filePath)) {
-                    echo "Fayl o'chirildi: " . $filePath . "\n";
+            // .tar faylini o'chirish
+            if (file_exists($tarFilePath)) {
+                if (unlink($tarFilePath)) {
+                    echo "Fayl o'chirildi: " . $tarFilePath . "\n";
                 } else {
-                    echo "Faylni o'chirishda xatolik yuz berdi: " . $filePath . "\n";
+                    echo "Faylni o'chirishda xatolik yuz berdi: " . $tarFilePath . "\n";
                 }
+            } else {
+                echo "Fayl topilmadi: " . $tarFilePath . "\n";
             }
 
-            if ($backup->delete()) {
-                echo "Bazadan o'chirildi: " . $backup->id . "\n";
+            // .sql faylini o'chirish
+            if (file_exists($sqlFilePath)) {
+                if (unlink($sqlFilePath)) {
+                    echo "Fayl o'chirildi: " . $sqlFilePath . "\n";
+                } else {
+                    echo "Faylni o'chirishda xatolik yuz berdi: " . $sqlFilePath . "\n";
+                }
             } else {
-                echo "Bazadan o'chirishda xatolik: " . $backup->id . "\n";
+                echo "Fayl topilmadi: " . $sqlFilePath . "\n";
+            }
+
+            // Zaxira yozuvini bazadan o'chirish
+            if ($backup->delete()) {
+                echo "Bazadan o'chirildi: " . $backup->id . $backup->datetime . "\n";
+            } else {
+                echo "Bazadan o'chirishda xatolik: " . $backup->id . $backup->datetime . "\n";
             }
         }
     }
